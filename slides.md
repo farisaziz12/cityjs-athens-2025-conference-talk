@@ -521,6 +521,46 @@ According to the State of DevOps Report 2022, teams that implement safety practi
 
 ---
 
+<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.7))" -->
+
+## SLA Burndown: The Error Budget Approach
+
+<div class="split-screen">
+<div>
+
+### What is an Error Budget?
+- Calculated from your SLA/SLO commitments
+- Represents your "allowance" for failures
+- When exhausted, prioritize stability over features
+- Creates balance between speed and reliability
+
+</div>
+<div>
+
+```javascript
+// Example Error Budget calculation
+const errorBudget = {
+  slaCommitment: 99.9,  // Three nines uptime
+  periodDays: 30,
+  totalMinutes: 30 * 24 * 60,
+  allowedDowntimeMinutes: 30 * 24 * 60 * 0.001,
+  remainingBudget: function(downtime) {
+    return this.allowedDowntimeMinutes - downtime;
+  }
+};
+```
+
+</div>
+</div>
+
+<div class="info-box">
+<span class="highlight">Error budgets provide a shared language</span> between engineering and business to make data-driven decisions about when to prioritize features vs. stability.
+</div>
+
+<!-- Speaker notes: Error budgets help quantify risk and create a framework for when to prioritize different types of work. They help teams make strategic decisions about safety nets. -->
+
+---
+
 <!-- _backgroundImage: "linear-gradient(to bottom right, rgba(74, 222, 128, 0.05), rgba(30, 41, 59, 0.7))" -->
 
 ## Business Realities & Practical Constraints
@@ -645,9 +685,14 @@ setConfig({
 Anything that gives you <strong>confidence</strong> when shipping code
 </blockquote>
 
-* Not just tests
-* Not just metrics
-* Something that catches you when you fall
+<div class="icon-grid">
+  <div class="icon-card">🧪 <span class="highlight">Testing</span><br>Verifies expected behavior</div>
+  <div class="icon-card">📊 <span class="highlight">Metrics</span><br>Measures system health</div>
+  <div class="icon-card">🔍 <span class="highlight">Observability</span><br>Provides system visibility</div>
+  <div class="icon-card">🛡️ <span class="highlight">Resilience</span><br>Handles unexpected conditions</div>
+</div>
+
+<!-- Speaker notes: A safety net is anything that gives us confidence to ship and maintain code. It's a comprehensive system beyond just individual components. -->
 
 ---
 
@@ -656,13 +701,56 @@ Anything that gives you <strong>confidence</strong> when shipping code
 ## Pillars of Confidence
 
 <div class="icon-grid">
-  <div class="icon-card">🧪 Testing</div>
-  <div class="icon-card">📊 Observability</div>
-  <div class="icon-card">🛡️ Resilience</div>
-  <div class="icon-card">🔄 Feedback</div>
+  <div class="icon-card">🧪 <span class="highlight">Testing</span><br>Verifies behavior matches expectations</div>
+  <div class="icon-card">📊 <span class="highlight">Observability</span><br>Makes system behavior visible</div>
+  <div class="icon-card">🛡️ <span class="highlight">Resilience</span><br>Handles unexpected conditions</div>
+  <div class="icon-card">🔄 <span class="highlight">Feedback</span><br>Accelerates learning cycles</div>
 </div>
 
-<!-- Speaker notes: These four pillars work together to create confidence. We'll explore each in more detail and discuss where they can be optional vs essential. -->
+<div class="info-box">
+These pillars work together to create a <span class="highlight">comprehensive safety system</span> - the absence of any one weakens your overall confidence when shipping.
+</div>
+
+<!-- Speaker notes: These four pillars work together to create confidence. Each pillar has different appropriate implementations depending on context, and they all complement each other. -->
+
+---
+
+<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.2))" -->
+
+## Building Complete Confidence
+
+<div class="split-screen">
+<div>
+
+### Individual Components
+<div class="info-box warning">
+  <span class="highlight">Tests Alone</span> ➡️ Know if it works, but not in production
+</div>
+<div class="info-box warning">
+  <span class="highlight">Metrics Alone</span> ➡️ Know something's wrong, but not why
+</div>
+<div class="info-box warning">
+  <span class="highlight">Resilience Alone</span> ➡️ Survive failures, but not learn from them
+</div>
+
+</div>
+<div>
+
+### Combined Effect
+<div class="info-box success">
+  <span class="highlight">Comprehensive Safety</span> ➡️ Confidence to ship and evolve
+  <ul style="margin-top: 0.5rem;">
+    <li>Verify behavior</li>
+    <li>Detect issues quickly</li>
+    <li>Recover gracefully</li>
+    <li>Learn and improve</li>
+  </ul>
+</div>
+
+</div>
+</div>
+
+<!-- Speaker notes: Individual safety practices are insufficient alone. Complete confidence comes from combining multiple approaches based on your specific context and needs. -->
 
 ---
 
