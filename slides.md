@@ -460,141 +460,158 @@ section.lead h2 {
 
 Faris Aziz  
 Staff Engineer @ Smallpdf
-
-![width:150px](https://cdn.worldvectorlogo.com/logos/smallpdf-1.svg)
-
 ---
 
 <!-- _backgroundImage: "linear-gradient(to bottom right, rgba(244, 63, 94, 0.1), rgba(30, 41, 59, 0.9))" -->
 
-## The Real Cost of Safety Nets
+## "We'll Fix It Later"
 
 <div class="info-box">
-  <span class="highlight">Safety practices have measurable costs</span>
+  <span class="highlight">The Developer's Safety Net Bypass</span>
 </div>
-
-- Test creation adds **15-35%** to initial development time<sup>1</sup>
-- CI/CD setup requires **40+ hours** of engineering investment<sup>2</sup>
-- Comprehensive monitoring costs **$15-50** per host monthly<sup>3</sup>
-- **68%** of teams report delaying tests due to delivery pressure<sup>4</sup>
-
-<div class="case-study">
-<h3>The Balancing Act</h3>
-<p>How do we balance immediate delivery with long-term sustainability?</p>
-</div>
-
-<div class="footer">
-<sup>1</sup> IBM Systems Sciences Institute  <sup>2</sup> GitLab DevSecOps Survey 2021  <sup>3</sup> Datadog & New Relic pricing models  <sup>4</sup> State of Testing Report 2022
-</div>
-
-<!-- Speaker notes: Present the real data around the costs of implementing safety practices. This frames the conversation in terms of trade-offs rather than right/wrong choices. -->
-
----
-
-<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(244, 63, 94, 0.05), rgba(30, 41, 59, 0.7))" -->
-
-## The "Fast Follow" Challenge
-
-```typescript
-// Industry research shows:
-const actualCompletion = {
-  plannedTestFollowUps: 100,
-  completedWithin1Sprint: 38,
-  completedWithin3Sprints: 57,
-  neverCompleted: 24
-};
-
-// State of DevOps Report indicates:
-// 72% of "fast follows" take 3+ sprints
-// 24% never happen at all
-```
-
-<div class="info-box">
-According to the State of DevOps Report 2022, teams that implement safety practices upfront are 2.4x more likely to meet their delivery targets long-term.<sup>5</sup>
-</div>
-
-<div class="footer">
-<sup>5</sup> DORA State of DevOps Report 2022  <sup>6</sup> Agile Testing Survey by Ministry of Testing
-</div>
-
-<!-- Speaker notes: Use actual industry data to show the gap between intentions and execution while acknowledging the real challenges teams face with "fast follows." -->
-
----
-
-<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.7))" -->
-
-## SLA Burndown: The Error Budget Approach
-
-<div class="split-screen">
-<div>
-
-### What is an Error Budget?
-- Calculated from your SLA/SLO commitments
-- Represents your "allowance" for failures
-- When exhausted, prioritize stability over features
-- Creates balance between speed and reliability
-
-</div>
-<div>
 
 ```javascript
-// Example Error Budget calculation
-const errorBudget = {
-  slaCommitment: 99.9,  // Three nines uptime
-  periodDays: 30,
-  totalMinutes: 30 * 24 * 60,
-  allowedDowntimeMinutes: 30 * 24 * 60 * 0.001,
-  remainingBudget: function(downtime) {
-    return this.allowedDowntimeMinutes - downtime;
-  }
-};
+// Things we tell ourselves (and others)
+const excuses = [
+  "I'll add tests in a separate ticket",
+  "It's QA's problem now",
+  "Just update the snapshot tests",
+  "git commit --no-verify",
+  "It works on my machine",
+  "We can refactor this later",
+  "Just ship it, Friday at 4:30pm",
+  "We don't have time for tests right now",
+  "Let's make it work first, then make it right"
+];
+
+// But at what cost?
 ```
 
-</div>
-</div>
-
-<div class="info-box">
-<span class="highlight">Error budgets provide a shared language</span> between engineering and business to make data-driven decisions about when to prioritize features vs. stability.
-</div>
-
-<!-- Speaker notes: Error budgets help quantify risk and create a framework for when to prioritize different types of work. They help teams make strategic decisions about safety nets. -->
+<!-- Speaker notes: Start with relatable developer shortcuts we all use to bypass safety measures. This frames the talk as practical advice for real situations, not an idealistic lecture. -->
 
 ---
 
-<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(74, 222, 128, 0.05), rgba(30, 41, 59, 0.7))" -->
+<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.9))" -->
 
-## Business Realities & Practical Constraints
+## The Real Question
+
+<div style="display: flex; justify-content: center; align-items: center; position: absolute; top: 0; bottom: 0; left: 0; right: 0; margin: auto; height: auto; padding-top: 2rem;">
+  <div class="info-box" style="padding: 3.5rem; text-align: center; background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(244, 113, 181, 0.1)); border-left: 4px solid transparent; border-image: linear-gradient(to bottom, #38BDF8, #F471B5) 1 100%; max-width: 90%;">
+    <h3 style="font-size: 2.4em; line-height: 1.4; background: linear-gradient(90deg, #38BDF8, #F471B5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0;">When is bypassing safety measures the right call,<br>and what are the long-term costs?</h3>
+  </div>
+</div>
+
+---
+
+<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.9))" -->
+
+## My Journey Through Safety Nets
+
+<div class="info-box">
+  <span class="highlight">From zero users to tens of millions</span> — I've experienced the full spectrum
+</div>
+
+```javascript
+// My career has exposed me to:
+const safetyNetExperiences = [
+  "Enterprise products with formal QA processes",
+  "Startups obsessed with test coverage metrics",
+  "Products with visual & E2E testing only",
+  "High-traffic platforms with no safety nets"
+];
+```
+
+<!-- Speaker notes: Frame that these slides are sharing observations from my career, not prescribing solutions. I've seen what works in different contexts. -->
+
+---
+
+<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.9))" -->
+
+## Connected TV Applications
+
+### The Scale
+- Streaming the Tokyo Olympics in 2020
+- 1.3 billion minutes streamed
+- Several hundred engineers
+- Hundreds of millions of users
+
+### Manual QA Processes
+- **Smoke Testing**: Verifying critical functionality works (login, playback, navigation)
+- **Sanity Testing**: Quick verification of new builds before deeper testing
+- **Regression Testing**: Ensuring new features don't break existing functionality
+
+<!-- Speaker notes: This was a massive platform where failures during live events would be catastrophic. The formal QA process was necessary given the scale and high-stakes nature of live sports broadcasting. -->
+
+---
+
+<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.9))" -->
+
+## Early-Stage Startup
+
+### The Context
+- Pre-seed startup with no users yet
+- Sub-30 engineers on the team
+- Quality gates set by management
+
+### Coverage-Focused Approach
+- Unit test coverage benchmarks (90%+)
+- Static analysis metrics as gates
+
+<!-- Speaker notes: This startup was building a foundation before having users. Management enforced test coverage as a proxy for quality, often without considering real-world usage scenarios. -->
+
+---
+
+<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.9))" -->
+
+## User-Experience Focused Platform
 
 <div class="split-screen">
 <div>
 
-### Valid Business Reasons
-- Startup survival: **82%** of failed startups cite "ran out of cash"<sup>7</sup>
-- Market validation: **35%** of features are rarely/never used<sup>8</sup>
-- Competitive pressure: **63%** of businesses prioritize speed<sup>9</sup>
-- Resource constraints: Average team has **3.4 engineers**<sup>10</sup>
+### Visual & Functional Testing
+- Storybook for UI components
+- Snapshot testing for interfaces
+- E2E tests for critical flows
+- Minimal unit testing
 
 </div>
 <div>
 
-### Practical Solutions
-- **Targeted** safety nets
-- **Phased** implementation
-- **Risk-based** prioritization
-- **Measured** trade-offs
+<div class="info-box">
+  <span class="highlight">Approach</span>: Testing what users experience
+</div>
+
+<div class="case-study">
+  <p>This team focused on testing user interfaces and journeys rather than implementation details.</p>
+</div>
 
 </div>
 </div>
 
-<div class="footer">
-<sup>7</sup> CB Insights Startup Failure Report  <sup>8</sup> Pendo Feature Adoption Report  <sup>9</sup> McKinsey Digital Survey 2021  <sup>10</sup> Stack Overflow Developer Survey 2022
-</div>
-
-<!-- Speaker notes: Present balanced facts about business constraints while offering practical middle-ground approaches. This isn't about skipping safety but about being strategic about implementation. -->
+<!-- Speaker notes: Consumer web application with rapid UI iterations, feature-driven development, and direct user feedback loops. Describe an approach that prioritized testing the user-facing aspects of the product without suggesting this is inherently better or worse. -->
 
 ---
 
-<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.2))" -->
+<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.9))" -->
+
+## High-Scale, Low-Safety Platform
+
+### The Reality
+- Platform generating tens of millions in ARR
+- Tens of millions of users per month
+- No automated testing suite
+- No dedicated QA resources
+
+### Approach
+- Developer-led verification
+- Product knowledge as primary safety net
+- Careful deployment practices
+
+<!-- Speaker notes: Despite the lack of formal safety practices, this platform was highly successful financially. The team relied on deep product knowledge and careful releases, though this approach did come with hidden costs and stress. -->
+
+---
+
+<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(244, 63, 94, 0.05), rgba(30, 41, 59, 0.2))" -->
 
 ## Hard Truth: Sometimes It's The Right Call
 
@@ -617,63 +634,41 @@ const errorBudget = {
 
 ## Who Am I?
 
-<div class="container">
-<div>
-
-### Professional
-- 👨‍💻 Staff Software Engineer @ Smallpdf
-- 🧾 Focus: Payments infrastructure & monetization
-- 🎤 Conference speaker & workshop instructor
-
-### Background
-- 🌐 Connected TV, FinTech, Fitness Tech, Monetization/Growth
-- 📚 Web performance & engineering leadership
-
-### Community
-- 💌 Contributor: Raycast extensions
-- 🚀 Founder of ZurichJS
-
+<div style="position: absolute; top: 20px; right: 20px; max-width: 650px;">
+  <img src="https://i.postimg.cc/9MbDYNpZ/Screenshot-2025-05-27-at-22-58-19.png" alt="Company Logos" style="width: 100%;">
 </div>
-<div>
 
-![bg right:25% width:180px height:180px](https://placekitten.com/400/400)
-
-**Previous Companies:**
-![width:60px](https://cdn.worldvectorlogo.com/logos/smallpdf-1.svg)
-![width:60px](https://cdn.worldvectorlogo.com/logos/navro-1.svg)
-![width:60px](https://cdn.worldvectorlogo.com/logos/eurosport-2021.svg)
-![width:60px](https://cdn.worldvectorlogo.com/logos/discovery-channel-2019.svg)
-
-**@farisaziz12**
-
+<div style="position: absolute; top: 200px; right: 60px; width: 200px; height: 200px; border-radius: 50%; overflow: hidden; border: 4px solid var(--primary); box-shadow: 0 4px 20px rgba(56, 189, 248, 0.3);">
+  <img src="https://i.postimg.cc/Pq5tyLRJ/voxxed-days-zurich-square-pic-profile.jpg" alt="Faris Aziz" style="width: 100%; height: 100%; object-fit: cover;">
 </div>
+
+<div style="position: absolute; top: 410px; right: 110px; text-align: center;">
+  <strong style="color: var(--primary);">@farisaziz12</strong>
+</div>
+
+<div style="padding: 0 300px 0 20px;">
+
+<h3 style="margin-bottom: 0rem;">Current Adventure</h3>
+<ul style="margin-top: 0; margin-bottom: 0.7rem; line-height: 1.3;">
+  <li>👨‍💻 Staff Software Engineer @ Smallpdf</li>
+  <li>🧾 Focus: Payments infrastructure & monetization</li>
+</ul>
+
+<h3 style="margin-bottom: 0rem; margin-top: 0.7rem;">Background</h3>
+<ul style="margin-top: 0; margin-bottom: 0.7rem; line-height: 1.3;">
+  <li>🌐 Connected TV, Monetization/Growth, FinTech, Fitness Tech</li>
+  <li>📚 Web performance & engineering leadership</li>
+</ul>
+
+<h3 style="margin-bottom: 0rem; margin-top: 0.7rem;">Community</h3>
+<ul style="margin-top: 0; margin-bottom: 0.7rem; line-height: 1.3;">
+  <li>💌 Open source contributor: Raycast extensions</li>
+  <li>🚀 Founder of ZurichJS - premier JavaScript meetup in the Swiss German region</li>
+</ul>
+
 </div>
 
 <!-- Speaker notes: Brief intro - emphasize experience with both rapid shipping and stable systems -->
-
----
-
-<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.2))" -->
-
-## The Day Everything Went Wrong
-
-```javascript
-// A simple config change
-setConfig({
-  databaseConnection: process.env.NEW_DB_CONNECTION
-});
-
-// Deployed Friday at 4:30 PM
-// No tests, no monitoring, no rollback plan
-```
-
-<div class="info-box">
-  <span class="danger">⚠️ 18,000 users affected</span><br>
-  <span class="warning">⏱️ 3 hours to detect</span><br>
-  <span class="danger">🛑 8 hours to resolve</span>
-</div>
-
-<!-- Speaker notes: Tell the story about a real deployment that went sideways because we skipped safety checks. Focus on consequences and detection delay. -->
 
 ---
 
@@ -693,6 +688,234 @@ Anything that gives you <strong>confidence</strong> when shipping code
 </div>
 
 <!-- Speaker notes: A safety net is anything that gives us confidence to ship and maintain code. It's a comprehensive system beyond just individual components. -->
+
+---
+
+<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.9))" -->
+
+## Safety Net: Automated Testing
+
+<div class="split-screen">
+<div style="line-height: 1.1;">
+
+### Test Pyramid
+- **Unit**: Isolated functions, pure logic
+- **Integration**: Service interactions
+- **Component**: UI in isolation
+- **E2E**: Complete user flows 
+- **System**: Platform with mocks
+
+</div>
+<div>
+
+```typescript
+// What are we trying to verify?
+test('payment processing handles network timeouts', async () => {
+  // Arrange: Setup mock payment gateway that times out
+  const gateway = mockPaymentGateway({ simulateTimeout: true });
+  
+  // Act: Process a payment
+  const result = await processPayment(gateway, validOrder);
+  
+  // Assert: Payment is marked for retry, not failed
+  expect(result.status).toBe('pending_retry');
+  expect(result.error).toContain('timeout');
+});
+```
+
+</div>
+</div>
+
+<!-- Speaker notes: Automated tests provide a safety net that catches issues early and enables confident changes. -->
+
+---
+
+<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.9))" -->
+
+## Safety Net: Manual Testing
+
+<div class="split-screen">
+<div style="line-height: 1.1;">
+
+### Key Test Types
+- **Smoke**: Verify critical paths
+- **Sanity**: Quick assessment post-build
+- **Regression**: Ensure existing features work
+- **Exploratory**: Discover unexpected issues
+
+### When to Apply
+- Complex UX flows
+- High-risk features
+- Pre-release validation
+
+</div>
+<div style="line-height: 1.1;">
+
+### Smoke Test Checklist
+```
+✓ User login
+✓ View dashboard
+✓ Product listing
+✓ Add to cart
+✓ Checkout
+```
+
+### Regression Focus
+```
+• Existing features still work
+• Edge cases handled
+• UI rendering consistent
+• Third-party integrations functional
+```
+
+</div>
+</div>
+
+<!-- Speaker notes: Manual testing complements automation with human judgment and exploratory capabilities. -->
+
+---
+
+<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.9))" -->
+
+## Safety Net: Metrics
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+  <div>
+    <h3 style="margin-top: 0; color: var(--primary);">Core Metrics</h3>
+    <ul style="margin-top: 0.5rem;">
+      <li><strong>Traffic</strong>: Requests/sec</li>
+      <li><strong>Errors</strong>: Rate, distribution</li>
+      <li><strong>Latency</strong>: P50, P95, P99</li>
+      <li><strong>Saturation</strong>: Resources</li>
+      <li><strong>Business</strong>: Conversions</li>
+    </ul>
+  </div>
+  <div>
+    <h3 style="margin-top: 0; color: var(--primary);">Key Aspects</h3>
+    <ul style="margin-top: 0.5rem;">
+      <li>Trend analysis</li>
+      <li>Alert thresholds</li>
+      <li>Historical baselines</li>
+      <li>Correlation</li>
+    </ul>
+  </div>
+</div>
+
+<div style="margin-top: 1rem;">
+```javascript
+app.use((req, res, next) => {
+  const start = Date.now();
+  metrics.count('req', {path: req.path});
+  res.once('finish', () => metrics.time('resp', Date.now() - start));
+  next();
+});
+```
+</div>
+
+<!-- Speaker notes: Metrics provide quantifiable measurements of system behavior and performance. -->
+
+---
+
+<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.9))" -->
+
+## Safety Net: Observability
+
+<div class="split-screen">
+<div style="line-height: 1.1;">
+
+### Components
+- **Logs**: Event records
+- **Traces**: Request paths
+- **Metrics**: System measurements
+- **Context**: Business data correlation
+
+### Value
+- Unknown-unknowns detection
+- Production debugging
+- Root cause analysis
+
+</div>
+<div>
+
+```javascript
+// Structured logging
+logger.info('payment_processed', {
+  // Technical context
+  request_id: '1234-abcd',
+  duration_ms: 342,
+  
+  // Business context
+  user_id: 'user_123',
+  amount: 99.99,
+  payment_method: 'credit_card',
+  
+  // Impact data
+  is_first_payment: true,
+  days_since_signup: 7
+});
+
+// Tracing
+const span = tracer.startSpan('process_payment');
+span.setAttribute('payment_id', id);
+// ...processing...
+span.end();
+```
+
+</div>
+</div>
+
+<!-- Speaker notes: Observability answers "why is this happening?" rather than just "what is happening?" -->
+
+---
+
+<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.9))" -->
+
+## Safety Net: Resilience Patterns
+
+<div class="split-screen">
+<div style="line-height: 1.1;">
+
+### Key Patterns
+- **Circuit Breakers**: Fail fast
+- **Retry with Backoff**: Increasing delays
+- **Rate Limiting**: Prevent overload
+- **Timeouts**: Don't wait forever
+- **Bulkheads**: Isolate failures
+- **Fallbacks**: Degraded functionality
+
+</div>
+<div>
+
+```javascript
+// Circuit breaker example
+class PaymentService {
+  constructor() {
+    this.circuitBreaker = new CircuitBreaker({
+      failureThreshold: 5,
+      resetTimeout: 30000
+    });
+  }
+  
+  async processPayment(order) {
+    try {
+      return await this.circuitBreaker.execute(
+        () => this.gateway.charge(order)
+      );
+    } catch (error) {
+      if (error.type === 'OPEN_CIRCUIT') {
+        // Use fallback when circuit open
+        return this.queueForLater(order);
+      }
+      throw error;
+    }
+  }
+}
+```
+
+</div>
+</div>
+
+<!-- Speaker notes: Resilience patterns help handle failures gracefully and prevent cascading failures. -->
 
 ---
 
@@ -820,7 +1043,7 @@ logger.info({
 </div>
 </div>
 
-<!-- Speaker notes: Observability is about asking questions of your system after it's deployed. Without it, you're flying blind. -->
+<!-- Speaker notes: Observability is about understanding your system's internal state through its outputs. It goes beyond monitoring to answer the question "why is this happening?" rather than just "what is happening?" -->
 
 ---
 
