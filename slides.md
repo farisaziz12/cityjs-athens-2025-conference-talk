@@ -1167,6 +1167,71 @@ Fast feedback loops let you detect and fix issues quickly. They're the differenc
 
 <!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.2))" -->
 
+# Where You Can Cut Corners (Safely)
+
+<div class="split-screen">
+<div>
+
+* Internal admin tools
+* Early-stage experiments
+* Non-critical user flows
+* Static content
+* Infrequently used features
+
+</div>
+<div>
+
+```javascript
+// Acceptable for low-risk features
+function experimentalFeature() {
+  try {
+    // New code with minimal testing
+    return newImplementation();
+  } catch (error) {
+    // Fallback to old behavior
+    return existingImplementation();
+  }
+}
+```
+
+</div>
+</div>
+
+<!-- Speaker notes: These are areas where the blast radius is limited and detection/recovery is straightforward. -->
+
+---
+
+<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(244, 63, 94, 0.05), rgba(30, 41, 59, 0.2))" -->
+
+## Where It Hurts (Fast)
+
+<div class="info-box danger">
+  <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+    <li><span class="highlight">Payment processing</span></li>
+    <li><span class="highlight">Authentication systems</span></li>
+    <li><span class="highlight">Data migrations</span></li>
+    <li><span class="highlight">Core business workflows</span></li>
+    <li><span class="highlight">High-volume API endpoints</span></li>
+  </ul>
+</div>
+
+```javascript
+// Don't skip tests here!
+async function processPayment(order, paymentDetails) {
+  // Critical business logic
+  // Affects revenue directly
+  // Hard to debug issues
+  // Customer trust at stake
+}
+```
+
+<!-- Speaker notes: These are critical paths where failures have immediate, severe consequences. Skimping on safety nets here is extremely costly. -->
+
+
+---
+
+<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.2))" -->
+
 ## Deployment Strategies for Confidence
 
 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
@@ -1195,6 +1260,49 @@ Fast feedback loops let you detect and fix issues quickly. They're the differenc
 </div>
 
 <!-- Speaker notes: These deployment patterns directly support your safety nets by making changes smaller, more predictable, and easier to verify. The smaller the change, the smaller the potential blast radius of any issue. -->
+
+---
+
+<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.2))" -->
+
+## Feature Flags: Getting Them Right Makes All The Difference
+
+<div class="split-screen">
+<div>
+
+### Key Principles
+- Flag OFF = 100% original code path
+- Flag ON = new implementation
+- Duplicate code is your friend
+- Never modify existing code paths
+- Gradual rollout with percentage controls
+
+</div>
+<div>
+
+```javascript
+function processCheckout(order) {
+  // Feature flag pattern that preserves the original code
+  if (featureFlags.isEnabled('new-checkout-flow', { 
+    userId: order.userId,
+    percentage: 5 // Start with just 5% of traffic
+  })) {
+    return newCheckoutImplementation(order);
+  } else {
+    // Original code completely untouched
+    return originalCheckoutImplementation(order);
+  }
+}
+```
+
+</div>
+</div>
+
+<div class="info-box success" style="margin-top: 0.5rem;">
+  <span class="highlight">Properly implemented feature flags = instant rollback capability</span>
+</div>
+
+<!-- Speaker notes: Feature flags are powerful because they allow you to ship code to production without activating it. The key is that the OFF state must leave the original code completely untouched - don't be afraid of some code duplication here as it's temporary and ensures safety. Start with a small percentage rollout and monitor carefully before increasing. -->
 
 ---
 
