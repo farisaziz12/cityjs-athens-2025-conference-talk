@@ -464,7 +464,7 @@ Staff Engineer @ Smallpdf
 
 <!-- _backgroundImage: "linear-gradient(to bottom right, rgba(244, 63, 94, 0.1), rgba(30, 41, 59, 0.9))" -->
 
-## "We'll Fix It Later"
+## The Fast Follow Fallacy
 
 <div class="info-box">
   <span class="highlight">The Developer's Safety Net Bypass</span>
@@ -934,7 +934,16 @@ class PaymentService {
 These pillars work together to create a <span class="highlight">comprehensive safety system</span> - the absence of any one weakens your overall confidence when shipping.
 </div>
 
-<!-- Speaker notes: These four pillars work together to create confidence. Each pillar has different appropriate implementations depending on context, and they all complement each other. -->
+<!-- Speaker notes: These four pillars work together to create confidence. Each pillar has different appropriate implementations depending on context, and they all complement each other. Fast feedback loops are critical - they include local dev environments, CI pipeline speed, feature flags, and canary deployments. For example, feature flags let you control rollout with code like:
+```javascript
+// Feature flag for controlled rollout
+if (featureFlag.isEnabled('new-payment-flow', user.id)) {
+  return renderNewPaymentUI();
+} else {
+  return renderExistingPaymentUI();
+}
+```
+Fast feedback loops let you detect and fix issues quickly. They're the difference between a 5-minute fix and a 5-hour crisis. -->
 
 ---
 
@@ -979,71 +988,79 @@ These pillars work together to create a <span class="highlight">comprehensive sa
 
 <!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.2))" -->
 
-## Pillar 1: Automated Testing
+## Let's Talk About DORA
 
-```typescript
-// What are we trying to verify?
-test('payment processing handles network timeouts', async () => {
-  // Arrange: Setup mock payment gateway that times out
-  const gateway = mockPaymentGateway({ simulateTimeout: true });
-  
-  // Act: Process a payment
-  const result = await processPayment(gateway, validOrder);
-  
-  // Assert: Payment is marked for retry, not failed
-  expect(result.status).toBe('pending_retry');
-  expect(result.error).toContain('timeout');
-});
-```
+<div style="display: flex; justify-content: center; align-items: center; height: 70%;">
+  <img src="https://static.wixstatic.com/media/9110e9_4e00d633a1bb42b3b03817695c045a5b~mv2.jpg/v1/fill/w_568,h_318,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/9110e9_4e00d633a1bb42b3b03817695c045a5b~mv2.jpg" alt="Dora the Explorer" style="max-height: 400px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
+</div>
 
-<!-- Speaker notes: Testing isn't about coverage percentage - it's about verification of critical paths and behavior under different conditions. -->
+<!-- Speaker notes: Start with this joke about Dora the Explorer before transitioning to the real DORA metrics. "Now let's talk about DORA... Oh wait, not that DORA!" This sets a lighter tone before diving into the technical metrics. -->
 
 ---
 
 <!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.2))" -->
 
-## Tests Are Insurance Policies
+## DORA Metrics: Measuring Engineering Performance
 
-| Test Type | Setup Cost | Maintenance | Value | When to Skip |
-|-----------|------------|-------------|-------|--------------|
-| Unit      | Low        | Low         | Medium | Non-critical business logic |
-| Integration | Medium   | Medium      | High  | Simple CRUD operations |
-| E2E       | High       | High        | Highest | Early prototypes |
-
-<!-- Speaker notes: Different types of tests have different ROI. Tests are investments with returns based on criticality. -->
-
----
-
-<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.2))" -->
-
-## Pillar 2: Observability
-
-<div class="split-screen">
-<div>
-
-* <span class="highlight">Logs</span>: What happened
-* <span class="highlight">Metrics</span>: How many & how often  
-* <span class="highlight">Traces</span>: Request path & dependencies
-
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+  <div>
+    <h3 style="margin-top: 0; color: var(--primary);">Key Metrics</h3>
+    <ul style="margin-top: 0.5rem;">
+      <li><strong>Deployment Frequency</strong>: How often you deploy to production</li>
+      <li><strong>Lead Time for Changes</strong>: Time from commit to production</li>
+      <li><strong>Mean Time to Recovery</strong>: How long to restore service</li>
+      <li><strong>Change Failure Rate</strong>: % of deployments causing failure</li>
+    </ul>
+  </div>
+  <div>
+    <h3 style="margin-top: 0; color: var(--primary);">Performance Levels</h3>
+    <div style="font-size: 0.85em; width: 100%;">
+      <table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">
+        <thead>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <th style="text-align: left; padding: 0.4rem;">Level</th>
+            <th style="text-align: left; padding: 0.4rem;">Deployment Frequency</th>
+            <th style="text-align: left; padding: 0.4rem;">Lead Time</th>
+            <th style="text-align: left; padding: 0.4rem;">MTTR</th>
+            <th style="text-align: left; padding: 0.4rem;">Change Failure Rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <td style="padding: 0.4rem;"><strong>Elite</strong></td>
+            <td style="padding: 0.4rem;">Multiple/day</td>
+            <td style="padding: 0.4rem;">< 1 day</td>
+            <td style="padding: 0.4rem;">< 1 hour</td>
+            <td style="padding: 0.4rem;">0-15%</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <td style="padding: 0.4rem;"><strong>High</strong></td>
+            <td style="padding: 0.4rem;">1/day-1/week</td>
+            <td style="padding: 0.4rem;">1 day-1 week</td>
+            <td style="padding: 0.4rem;">< 1 day</td>
+            <td style="padding: 0.4rem;">16-30%</td>
+          </tr>
+          <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <td style="padding: 0.4rem;"><strong>Medium</strong></td>
+            <td style="padding: 0.4rem;">1/week-1/month</td>
+            <td style="padding: 0.4rem;">1 week-1 month</td>
+            <td style="padding: 0.4rem;">1 day-1 week</td>
+            <td style="padding: 0.4rem;">31-45%</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.4rem;"><strong>Low</strong></td>
+            <td style="padding: 0.4rem;">1/month-1/6 months</td>
+            <td style="padding: 0.4rem;">1-6 months</td>
+            <td style="padding: 0.4rem;">1 week+</td>
+            <td style="padding: 0.4rem;">46-60%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
-<div>
 
-```javascript
-// Structured logging with context
-logger.info({
-  event: 'payment_processed',
-  orderId: order.id,
-  userId: user.id,
-  amount: payment.amount,
-  processor: payment.gateway,
-  durationMs: timer.elapsed()
-});
-```
-
-</div>
-</div>
-
-<!-- Speaker notes: Observability is about understanding your system's internal state through its outputs. It goes beyond monitoring to answer the question "why is this happening?" rather than just "what is happening?" -->
+<!-- Speaker notes: DORA metrics provide objective ways to measure engineering performance. They're backed by research across thousands of organizations and show strong correlation with business outcomes. -->
 
 ---
 
@@ -1051,392 +1068,133 @@ logger.info({
 
 ## The Cost of Flying Blind
 
-<div class="info-box">
-  <span class="danger">⏱️ Average incident detection: 3 hours</span><br>
-  <span class="warning">🔍 Time to root cause: 2.5x longer</span><br>
-  <span class="danger">👥 Customer-reported issues: 68% higher</span>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+  <div>
+    <h3 style="margin-top: 0; color: var(--danger);">Business Impact</h3>
+    <div style="background: rgba(30, 41, 59, 0.5); padding: 1rem; border-radius: 8px; margin-top: 0.5rem;">
+      <p style="margin: 0 0 0.5rem 0;"><strong>$10M ARR Business</strong></p>
+      <ul style="margin: 0; padding-left: 1.2rem;">
+        <li>$1,141 revenue per hour</li>
+        <li>99.9% uptime = 8.76 hours downtime/year</li>
+        <li><span class="danger">$10,000+ direct cost per year</span></li>
+      </ul>
+    </div>
+    <div style="background: rgba(30, 41, 59, 0.5); padding: 1rem; border-radius: 8px; margin-top: 0.75rem;">
+      <p style="margin: 0 0 0.5rem 0;"><strong>Change Failure Impact</strong></p>
+      <ul style="margin: 0; padding-left: 1.2rem;">
+        <li>5% failure rate × 3.5 hour MTTR</li>
+        <li>100 deploys/year = 17.5 hours downtime</li>
+        <li><span class="danger">$20,000+ annual failure cost</span></li>
+      </ul>
+    </div>
+  </div>
+  <div>
+    <h3 style="margin-top: 0; color: var(--danger);">Hidden Costs</h3>
+    <ul style="margin-top: 0.5rem;">
+      <li><strong>Customer Trust</strong>: ~30% will switch services after one bad experience</li>
+      <li><strong>Engineering Time</strong>: Incident response diverts from new features</li>
+      <li><strong>Team Morale</strong>: Firefighting increases burnout</li>
+      <li><strong>Opportunity Cost</strong>: Slower development velocity</li>
+    </ul>
+    <div style="background: rgba(244, 63, 94, 0.1); padding: 0.75rem; border-radius: 8px; margin-top: 0.75rem; text-align: center;">
+      <p style="margin: 0; font-size: 1.1em;">The true cost is <span class="highlight">5-10x</span> the direct revenue loss</p>
+    </div>
+  </div>
 </div>
 
-```javascript
-// Debugging without observability
-function handleError(error) {
-  console.error("Something went wrong");
-  // What went wrong? Who was affected?
-  // When did it start? Why did it happen?
-}
-```
-
-<!-- Speaker notes: These numbers are industry averages for systems without proper observability. The cost compounds with each incident. -->
+<!-- Speaker notes: These calculations show the real business impact of poor observability and high change failure rates. The hidden costs often far outweigh the direct revenue loss. For a $10M ARR business, poor safety nets can easily cost $100,000+ annually when all factors are considered. -->
 
 ---
 
 <!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.2))" -->
 
-## Pillar 3: Resilience Patterns
-
-```javascript
-// Circuit breaker pattern
-class PaymentGateway {
-  async processPayment(order) {
-    if (this.circuitBreaker.isOpen()) {
-      return this.fallbackPaymentProcessor(order);
-    }
-    
-    try {
-      const result = await this.makePaymentRequest(order);
-      this.circuitBreaker.recordSuccess();
-      return result;
-    } catch (error) {
-      this.circuitBreaker.recordFailure();
-      throw error;
-    }
-  }
-}
-```
-
-<!-- Speaker notes: Resilience patterns are about designing for failure. They're the safety net when things inevitably break. -->
-
----
-
-<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.2))" -->
-
-## Common Resilience Patterns
-
-<div class="icon-grid">
-  <div class="icon-card">⏱️ Retry with backoff</div>
-  <div class="icon-card">🔌 Circuit breakers</div>
-  <div class="icon-card">🔄 Fallbacks</div>
-  <div class="icon-card">🔒 Bulkheads</div>
-</div>
-
-<!-- Speaker notes: These patterns are fundamental but often skipped in initial implementation. They're much harder to add later. -->
-
----
-
-<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.2))" -->
-
-## Pillar 4: Fast Feedback Loops
-
-<div class="split-screen">
-<div>
-
-* Local dev environment 
-* CI pipeline speed
-* Feature flags
-* Canary deployments
-
-</div>
-<div>
-
-```javascript
-// Feature flag for controlled rollout
-if (featureFlag.isEnabled('new-payment-flow', user.id)) {
-  return renderNewPaymentUI();
-} else {
-  return renderExistingPaymentUI();
-}
-```
-
-</div>
-</div>
-
-<!-- Speaker notes: Fast feedback loops let you detect and fix issues quickly. They're the difference between a 5-minute fix and a 5-hour crisis. -->
-
----
-
-<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.2))" -->
-
-## Context Matters
-
-<div class="icon-grid">
-  <div class="icon-card">🔑 <span class="highlight">Feature criticality</span></div>
-  <div class="icon-card">👥 <span class="highlight">User impact</span></div>
-  <div class="icon-card">💰 <span class="highlight">Business impact</span></div>
-  <div class="icon-card">🚀 <span class="highlight">Platform maturity</span></div>
-</div>
-
-<!-- Speaker notes: Not all code is created equal. Context determines how much safety is needed. -->
-
----
-
-<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.2))" -->
-
-## Decision Matrix
-
-|                | Low Impact         | High Impact                |
-|----------------|--------------------|-----------------------------|
-| **Low Risk**   | <span class="success">Minimal safety</span> | <span class="warning">Moderate safety</span> |
-| **High Risk**  | <span class="warning">Moderate safety</span> | <span class="danger">Maximum safety</span> |
-
-<!-- Speaker notes: This simple matrix helps teams decide where to invest in safety nets. High risk + high impact demands maximum safety. -->
-
----
-
-<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(74, 222, 128, 0.05), rgba(30, 41, 59, 0.2))" -->
-
-## Where You Can Cut Corners (Safely)
-
-<div class="split-screen">
-<div>
-
-* Internal admin tools
-* Early-stage experiments
-* Non-critical user flows
-* Static content
-* Infrequently used features
-
-</div>
-<div>
-
-```javascript
-// Acceptable for low-risk features
-function experimentalFeature() {
-  try {
-    // New code with minimal testing
-    return newImplementation();
-  } catch (error) {
-    // Fallback to old behavior
-    return existingImplementation();
-  }
-}
-```
-
-</div>
-</div>
-
-<!-- Speaker notes: These are areas where the blast radius is limited and detection/recovery is straightforward. -->
-
----
-
-<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(244, 63, 94, 0.05), rgba(30, 41, 59, 0.2))" -->
-
-## Where It Hurts (Fast)
-
-<div class="info-box danger">
-  <span class="highlight">Payment processing</span> •
-  <span class="highlight">Authentication systems</span> •
-  <span class="highlight">Data migrations</span> •
-  <span class="highlight">Core business workflows</span> •
-  <span class="highlight">High-volume API endpoints</span>
-</div>
-
-```javascript
-// Don't skip tests here!
-async function processPayment(order, paymentDetails) {
-  // Critical business logic
-  // Affects revenue directly
-  // Hard to debug issues
-  // Customer trust at stake
-}
-```
-
-<!-- Speaker notes: These are critical paths where failures have immediate, severe consequences. Skimping on safety nets here is extremely costly. -->
-
----
-
-<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.2))" -->
-
-## What Is Technical Debt, Really?
-
-<blockquote>
-Technical debt is the <span class="highlight">accumulated cost</span> of shortcuts that seemed reasonable at the time
-</blockquote>
-
-* Not all debt is bad
-* Some debt is strategic
-* Compound interest applies
-
-<!-- Speaker notes: Technical debt isn't just "bad code" - it's the increased cost of change over time due to past decisions. -->
-
----
-
-<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.2))" -->
-
-## Debt Accumulation Timeline
-
-```
-Time →
-│
-├─ Day 1: Skip tests to ship faster (+1 debt)
-│
-├─ Month 3: Work around untested code (+2 debt)
-│
-├─ Month 6: Can't refactor due to uncertainty (+5 debt)
-│
-├─ Year 1: Rewrite required (+20 debt)
-```
-
-<!-- Speaker notes: Debt compounds over time. What starts as a small shortcut can lead to massive costs later. -->
-
----
-
-<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(74, 222, 128, 0.05), rgba(30, 41, 59, 0.2))" -->
-
-## Shortcuts That Age Well
-
-<div class="icon-grid">
-  <div class="icon-card">🔍 <span class="highlight">Simplified first version (YAGNI)</span></div>
-  <div class="icon-card">🎯 <span class="highlight">Targeted test coverage</span></div>
-  <div class="icon-card">📝 <span class="highlight">Manual processes first</span></div>
-  <div class="icon-card">📊 <span class="highlight">Basic monitoring</span></div>
-</div>
-
-<!-- Speaker notes: These shortcuts are reversible and have manageable long-term consequences. -->
-
----
-
-<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(244, 63, 94, 0.05), rgba(30, 41, 59, 0.2))" -->
-
-## Shortcuts That Blow Up Later
-
-```javascript
-// Shortcut: Hard-coded configuration
-const API_KEY = "abc123"; // We'll make this configurable later
-
-// Shortcut: Magic numbers
-if (users.length > 1000) { // Why 1000?
-  enablePagination();
-}
-
-// Shortcut: Inconsistent error handling
-try {
-  // Critical operation
-} catch (e) {
-  console.log("Error occurred"); // No details, no reporting
-}
-```
-
-<!-- Speaker notes: These patterns create invisible constraints that limit future changes and create unexpected failures. -->
-
----
-
-<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(244, 63, 94, 0.05), rgba(30, 41, 59, 0.2))" -->
-
-## Case Study: The Database Migration
-
-<div class="case-study">
-  <h3>Scenario: MongoDB → PostgreSQL</h3>
-  
-  <p><strong>Shortcuts taken:</strong></p>
-  <ul>
-    <li>No comprehensive test suite</li>
-    <li>Limited observability</li>
-    <li>No rollback plan</li>
-    <li>Single big-bang migration</li>
-  </ul>
-  
-  <p><strong>Result:</strong> <span class="danger">36-hour outage, data inconsistencies, lost revenue</span></p>
-</div>
-
-<!-- Speaker notes: Share the specific details of a real migration gone wrong. Emphasize how proper safety nets would have prevented or minimized the impact. -->
-
----
-
-<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(74, 222, 128, 0.05), rgba(30, 41, 59, 0.2))" -->
-
-## Case Study: Feature Flags Done Right
-
-<div class="case-study">
-  <h3>Scenario: Payment System Rewrite</h3>
-  
-  <p><strong>Safety nets implemented:</strong></p>
-  <ul>
-    <li>Feature flag with 1% initial traffic</li>
-    <li>Comprehensive monitoring</li>
-    <li>Side-by-side validation with old system</li>
-    <li>Automated rollback triggers</li>
-  </ul>
-  
-  <p><strong>Result:</strong> <span class="success">8 bugs caught before full rollout, zero customer impact</span></p>
-</div>
-
-<!-- Speaker notes: Contrast with a success story where proper safety nets were implemented, even though the timeline was aggressive. -->
-
----
-
-<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.2))" -->
-
-## How to Think About Risk
-
-<div class="icon-grid">
-  <div class="icon-card">💥 <span class="highlight">Blast Radius</span><br>How many users affected?</div>
-  <div class="icon-card">🔍 <span class="highlight">Detectability</span><br>How quickly will we know?</div>
-  <div class="icon-card">⏪ <span class="highlight">Recoverability</span><br>How fast can we fix it?</div>
-  <div class="icon-card">💰 <span class="highlight">Business Impact</span><br>What's the cost of failure?</div>
-</div>
-
-<!-- Speaker notes: This framework helps teams make conscious decisions about risk, rather than accidental ones. -->
-
----
-
-<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.2))" -->
-
-## Principles for Pragmatic Engineering
-
-* <span class="highlight">Start small</span>: Minimal but effective safety nets
-* <span class="highlight">Focus on critical paths</span>: Not all code needs the same protection
-* <span class="highlight">Automate guardrails</span>: Make safety the easy choice
-* <span class="highlight">Measure debt</span>: Track the cost of shortcuts
-* <span class="highlight">Incremental improvement</span>: Better safety nets over time
-
-<!-- Speaker notes: These principles help balance speed and safety without slowing teams down unnecessarily. -->
-
----
-
-<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.2))" -->
-
-## Risk Assessment Checklist
-
-```javascript
-// Before deploying, ask:
-const safetyChecklist = {
-  testing: "Do we have tests for critical paths?",
-  monitoring: "Will we know if this breaks?",
-  rollback: "Can we undo this change quickly?",
-  blast_radius: "How many users could be affected?",
-  detection: "How will we know if something goes wrong?",
-  recovery: "What's our plan if this fails?"
-};
-```
-
-<!-- Speaker notes: A simple checklist helps teams make conscious risk decisions rather than accidental ones. -->
-
----
-
-<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.2))" -->
-
-## Tools That Help
-
-<div>
-  <img class="tech-logo" alt="Jest" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/jest/jest-plain.svg">
-  <img class="tech-logo" alt="Cypress" src="https://raw.githubusercontent.com/cypress-io/cypress-icons/master/src/logo/cypress-io-logo-round.svg">
-  <img class="tech-logo" alt="Prometheus" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/prometheus/prometheus-original.svg">
-  <img class="tech-logo" alt="Grafana" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/grafana/grafana-original.svg">
-  <img class="tech-logo" alt="Datadog" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/datadog/datadog-original.svg">
-</div>
+## The Language of Confidence
 
 <div class="info-box">
-  <span class="highlight">Testing</span>: Jest, Cypress, Playwright<br>
-  <span class="highlight">Observability</span>: Datadog, New Relic, OpenTelemetry<br>
-  <span class="highlight">Resilience</span>: Polly, Hystrix, custom middleware<br>
-  <span class="highlight">Deployment</span>: Feature flags, canary releases, GitOps
+  <span class="highlight">Words reveal our confidence level in our systems</span>
 </div>
 
-<!-- Speaker notes: These tools make implementing safety nets easier and more effective. The right tool can drastically reduce the cost of safety. -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+  <div style="background: rgba(244, 63, 94, 0.1); padding: 1rem; border-radius: 8px; border-left: 4px solid var(--danger);">
+    <h3 style="margin-top: 0; color: var(--danger);">Low Confidence</h3>
+    <ul style="margin-top: 0.5rem;">
+      <li>"It <em>should</em> work this way..."</li>
+      <li>"I <em>think</em> this is what happens..."</li>
+      <li>"I <em>have a feeling</em> this is the issue..."</li>
+      <li>"Let's just try it and see what happens..."</li>
+    </ul>
+  </div>
+  <div style="background: rgba(74, 222, 128, 0.1); padding: 1rem; border-radius: 8px; border-left: 4px solid var(--success);">
+    <h3 style="margin-top: 0; color: var(--success);">High Confidence</h3>
+    <ul style="margin-top: 0.5rem;">
+      <li>"This is how it works..."</li>
+      <li>"Our metrics show..."</li>
+      <li>"The logs indicate..."</li>
+      <li>"I can see from the traces that..."</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Speaker notes: The language we use reflects our confidence in our systems. When we use tentative language, it signals a lack of visibility and understanding. The pillars of confidence give us the tools to speak with certainty about our systems. -->
 
 ---
 
 <!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.2))" -->
 
-## Key Takeaways
+## "We Don't Deploy on Friday..."
 
-1. Safety nets provide <span class="highlight">confidence</span>, not bureaucracy
-2. Context determines necessary safety level
-3. Some shortcuts are strategic, others are reckless
-4. Technical debt compounds over time
-5. Invest in safety proportional to risk
+<div style="margin-bottom: 1rem;">
+  <div class="info-box warning">
+    <span class="highlight">When your team avoids deploying on "Thursday+1"...</span>
+  </div>
+</div>
 
-<!-- Speaker notes: Reiterate the main points and emphasize that this is about pragmatic, context-aware decisions. -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+  <div>
+    <h3 style="margin-top: 0; color: var(--primary);">Code Freeze Symptoms</h3>
+    <ul style="margin-top: 0.5rem;">
+      <li>No deployments on Fridays</li>
+      <li>Freeze periods before holidays</li>
+      <li>Blackout windows for "critical times"</li>
+      <li>Delayed releases due to fear</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Speaker notes: Code freezes are a symptom, not a solution. When teams avoid deploying at certain times, it reveals cracks in their safety nets. The real solution is to fix the pillars that give you confidence, not to avoid deploying. -->
+
+---
+
+<!-- _backgroundImage: "linear-gradient(to bottom right, rgba(56, 189, 248, 0.05), rgba(30, 41, 59, 0.2))" -->
+
+## Deployment Strategies for Confidence
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+  <div>
+    <h3 style="margin-top: 0; color: var(--primary);">Trunk-Based Development</h3>
+    <ul style="margin-top: 0.5rem;">
+      <li>Short-lived branches (< 1 day)</li>
+      <li>Frequent merges to main</li>
+      <li>Feature flags for WIP code</li>
+      <li>CI for every commit</li>
+    </ul>
+  </div>
+  <div>
+    <h3 style="margin-top: 0; color: var(--primary);">Atomic Deployments</h3>
+    <ul style="margin-top: 0.5rem;">
+      <li>Small, self-contained changes</li>
+      <li>Lower cognitive load to review</li>
+      <li>Easier to test thoroughly</li>
+      <li>Simpler to rollback if needed</li>
+    </ul>
+  </div>
+</div>
+
+<div class="info-box success" style="margin-top: 1rem;">
+  <span class="highlight">Small changes → Small blast radius → Higher confidence</span>
+</div>
+
+<!-- Speaker notes: These deployment patterns directly support your safety nets by making changes smaller, more predictable, and easier to verify. The smaller the change, the smaller the potential blast radius of any issue. -->
 
 ---
 
@@ -1444,19 +1202,29 @@ const safetyChecklist = {
 
 ## Conclusion: Finding The Balance
 
-<div class="info-box">
-  <span class="highlight">There's no single right approach – context matters</span>
+<div class="info-box" style="text-align: center; padding: 1.5rem; max-width: 80%; margin: 0 auto 2rem auto;">
+  <span class="highlight" style="font-size: 1.4em;">There's no single right approach – context matters</span>
 </div>
 
-* Make **intentional** decisions about safety nets
-* Focus on **critical paths** that impact users and revenue
-* Build a **culture** where safety and speed coexist
-* Start with **minimal** but effective guardrails
-* **Improve** incrementally over time
+<div style="display: flex; justify-content: center;">
+  <ul style="list-style-type: none; padding: 0; max-width: 80%;">
+    <li style="margin-bottom: 1rem; font-size: 1.2em;">
+      <span class="highlight">🎯 Targeted safety</span>: Invest where it matters most
+    </li>
+    <li style="margin-bottom: 1rem; font-size: 1.2em;">
+      <span class="highlight">📈 Strategic shortcuts</span>: Know when to take them
+    </li>
+    <li style="margin-bottom: 1rem; font-size: 1.2em;">
+      <span class="highlight">🔄 Incremental improvement</span>: Build better over time
+    </li>
+    <li style="margin-bottom: 1rem; font-size: 1.2em;">
+      <span class="highlight">🗣️ Clear communication</span>: Language reflects confidence
+    </li>
+  </ul>
+</div>
 
-<div class="case-study">
-<h3>Remember</h3>
-<p>The goal isn't perfection – it's delivering value <span class="highlight">sustainably</span></p>
+<div style="text-align: center; margin-top: 1.5rem; font-style: italic; color: var(--primary); font-size: 1.3em;">
+  "The goal isn't perfection – it's delivering value sustainably"
 </div>
 
 ---
@@ -1464,11 +1232,21 @@ const safetyChecklist = {
 <!-- _class: lead -->
 <!-- _backgroundImage: "radial-gradient(circle at 80% 80%, rgba(56, 189, 248, 0.15), transparent)" -->
 
-## Q&A
+## Thank you!
 
-Thanks—let's talk.  
-Connect: @farisaziz12 • faris@smallpdf.com
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+  <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+    <div style="width: 200px; height: 200px; display: flex; justify-content: center; align-items: center;">
+      <img src="https://i.postimg.cc/2yGKxQLQ/frame-12.png" alt="Connect QR Code" style="max-width: 100%; max-height: 100%; border-radius: 8px;">
+    </div>
+    <p style="margin: 0;">Connect with me<br><span style="color: var(--primary); font-weight: bold;">@farisaziz12</span></p>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+    <div style="width: 200px; height: 200px; display: flex; justify-content: center; align-items: center;">
+      <img src="https://i.postimg.cc/NF7Jb1Ss/frame-13.png" alt="Feedback QR Code" style="max-width: 100%; max-height: 100%; border-radius: 8px;">
+    </div>
+    <p style="margin: 0;">Session Feedback<br><span style="color: var(--secondary); font-weight: bold;">Let me know your thoughts!</span></p>
+  </div>
+</div>
 
-![width:150px](https://cdn.worldvectorlogo.com/logos/smallpdf-1.svg)
-
-<!-- Speaker notes: Be prepared for questions about specific technologies, team dynamics, and how to implement these practices incrementally. -->
+<!-- Speaker notes: Thank the audience and encourage them to connect with you on social media or provide feedback through the QR codes. Be ready for questions on specific technologies, team dynamics, and how to implement these practices incrementally. -->
