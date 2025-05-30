@@ -1096,9 +1096,6 @@ Fast feedback loops let you detect and fix issues quickly. They're the differenc
       <li><strong>Team Morale</strong>: Firefighting increases burnout</li>
       <li><strong>Opportunity Cost</strong>: Slower development velocity</li>
     </ul>
-    <div style="background: rgba(244, 63, 94, 0.1); padding: 0.75rem; border-radius: 8px; margin-top: 0.75rem; text-align: center;">
-      <p style="margin: 0; font-size: 1.1em;">The true cost is <span class="highlight">5-10x</span> the direct revenue loss</p>
-    </div>
   </div>
 </div>
 
